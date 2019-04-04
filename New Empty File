@@ -1,0 +1,71 @@
+# @property
+    # def __threshold(self) -> float:
+    #     thresholds = {'en_ru': -6.5}
+    #     key = '{0}_{1}'.format(self.__language_from, self.__language_to)
+    #     if key in thresholds:
+    #         return thresholds[key]
+    #     else:
+    #         raise ValueError('en-> {0} is not available!'.format(self.__language_to))
+    #
+    # @property
+    # def minimal_frequency(self):
+    #     min_frequencies = {'en_ru': 0.00001}
+    #     key = '{0}_{1}'.format(self.__language_from, self.__language_to)
+    #     if key in min_frequencies:
+    #         return min_frequencies[key]
+    #     else:
+    #         raise ValueError('en-> {0} is not available!'.format(self.__language_to))
+    #
+    # def call(self, docs):
+    #     new_data = [self._process(sent, self.__frequencies, self.__keyboard_multilanguage_layouts) for sent in docs]
+    #     return new_data
+    #
+    # def _process(self, sentence, freqs: dict, mapp: dict):
+    #     s = [PuntoSwitcher._revert(token, mapp)
+    #          if self._count_metric(token, freqs) < self.__threshold else token
+    #          for token in sentence.lower().split()]
+    #     print(s)
+    #     return ' '.join(s)
+    #
+    # def _count_metric(self, token: str, freqs: dict):
+    #     if len(token) < 2:
+    #        return -10
+    #     char2grams = PuntoSwitcher.build_charngram(token, 2)
+    #     parts = [PuntoSwitcher._transform_function(freqs[ch])
+    #              if ch in freqs else self.minimal_frequency
+    #              for ch in char2grams]
+    #     return np.mean(parts)
+    #
+    #
+    # @staticmethod
+    # def _transform_function(x):
+    #     return np.log(x)
+    #
+    # @staticmethod
+    # def build_charngram(word: str, n: int):
+    #     return [word[i:i + n] for i in range(len(word) - n + 1)]
+
+
+
+import json
+file_path = "/home/dasha/work/personal/utils/en_frequencies_char2grams.json"
+with open(file_path, 'r') as f:
+    data = json.load(f)
+cl = PlainPuntoSwitcher('ru')
+res = cl.call(['ghbdtn rfr ltkf', 'nhfnhfnfnf gjxtve yt htdthnbncz z yt gjyzkf', 'hello there you ghbdtn', 'gjxtve e vtyz yt gjlrk.xftncz nfhba smart'])
+print(res)
+
+
+
+import json
+file_path = "/home/dasha/work/personal/utils/translit_abs_frequency_bigram.json"
+with open(file_path, 'r') as f:
+    data = json.load(f)
+cl = TransliterationChanger('ru', data)
+
+lines = ['privet kak dela',
+         'Moi dyadya samih chestnih pravil, kogda ne v shutku zanemog, ',
+         'on uvazhat\' sebya zastavil i luchshe vidumat\' ne mog. ']
+
+res = cl.call(lines)
+print(res)
